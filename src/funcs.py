@@ -249,6 +249,43 @@ def lagged_correlation(returns, tau=0):
             cross_corr_matrix.iloc[i, j] = round(
                 np.correlate(returns.iloc[:, i], returns.iloc[tau:, j], mode='valid')[0] / (len(returns) - tau),
                 4)  # definition of correlation
-    return cross_corr_matrix  # justified a posteriori looking at the values on the diagonal
+    return cross_corr_matrix
 
 
+def double_average(sales, prices, tau):
+    corr_series = pd.Series(index=sales.columns)  # initialize the series
+    for i in range(len(sales.columns)):
+        corr_series.iloc[i] = round(
+            np.correlate(sales.iloc[:, i], prices.iloc[tau:, i], mode='valid')[0] / (len(sales) - tau), 4)
+    mean = corr_series.mean()
+
+    return mean
+
+
+def double_average_lags(periods, return_1, return_2):
+    double_avgs = []
+    for t in periods:
+        double_avgs.append(double_average(return_1, return_2, t))
+    return double_avgs
+
+
+def lagged_correlation_mixed(ret1, ret2, tau=0):
+    '''
+    Lagged correlation matrix with shift = τ
+
+    Parametres:
+        - ret1
+        - ret2
+        - tau = lagging time
+    Returns:
+        cross correlation matrix between ret1 & ret2 with time-lag tau
+
+    '''
+    cross_corr_matrix = pd.DataFrame(columns=ret1.columns, index=ret1.columns)  # initialize the matrix
+
+    for i in range(len(ret1.columns)):
+        for j in range(len(ret1.columns)):
+            cross_corr_matrix.iloc[i, j] = round(
+                np.correlate(ret1.iloc[:, i], ret2.iloc[tau:, j], mode='valid')[0] / (len(ret1) - tau),
+                4)  # definition of correlation
+    return cross_corr_matrix
