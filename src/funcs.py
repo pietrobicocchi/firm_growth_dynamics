@@ -50,6 +50,14 @@ def spectral_distance_metric(V0, V1, n=10):
     return dist
 
 
+# Second metric -> less useful
+def overlap_distance(eigenvectors_1, eigenvectors_2, number_evec = 10):
+    n = number_evec
+    overlap_distance = np.sqrt(2*(1 - np.sum((eigenvectors_1[:,-n:] * eigenvectors_2[:,-n:])**2)))
+
+    print(f"Overlap distance for the first {n} eigenvectors: {overlap_distance}")
+    return overlap_distance
+
 # Density of an eigenvector
 def density_eigenvector_metric(eigenvectors, number_eVec=10):
     """
@@ -203,7 +211,7 @@ def plot_by_sector(mode, eVec, tk_ind):
     idx_by_sector, sector_dict, sector_indices, sector_labels = create_sectors(tk_ind)
 
     fig, ax = plt.subplots(figsize=(16, 9))
-    ax.plot(eVec[idx_by_sector, int(mode)].flatten())
+    ax.plot(eVec[idx_by_sector, int(mode)].flatten(), marker='x', linestyle='-')
     ax.axhline(0, c="green")
     # ax.set_ylim(-0.05, 0.2)
     # set x-axis labels

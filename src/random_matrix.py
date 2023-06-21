@@ -148,7 +148,7 @@ def visualize_mode(eVec, corr, mode=-1):
     plt.xlabel("Index")
     plt.ylabel("Intensity")
 
-    ax.plot(eVec[:, int(mode)].flatten())
+    ax.plot(eVec[:, int(mode)].flatten(), marker='x', linestyle='-')
     ax.axhline(0, c="green")
     if mode == -1:
         ax.set_ylim(-0.05, 0.2)

@@ -1,5 +1,4 @@
 from src.csv_data.extract import *
-from src.csv_data.extract import *
 
 import numpy as np
 import pandas as pd
